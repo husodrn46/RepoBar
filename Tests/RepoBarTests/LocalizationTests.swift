@@ -23,6 +23,11 @@ struct LocalizationTests {
         #expect(RelativeFormatter.string(from: now - 30, relativeTo: now, locale: Locale(identifier: "tr_TR")) == "30 sn. önce")
     }
 
+    @Test func `machine relative formatter remains english`() {
+        let now = Date(timeIntervalSince1970: 1000)
+        #expect(RelativeFormatter.machineString(from: now - 30, relativeTo: now) == "30 sec. ago")
+    }
+
     @Test func `environment override has priority`() {
         let locale = RepoBarLocalization.environmentLocale(["REPOBAR_LANGUAGE": "tr_TR", "LANG": "en_US.UTF-8"])
         #expect(locale.language.languageCode?.identifier == "tr")

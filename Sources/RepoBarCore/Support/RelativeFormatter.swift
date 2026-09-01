@@ -1,6 +1,10 @@
 import Foundation
 
 public enum RelativeFormatter {
+    public static func machineString(from date: Date, relativeTo now: Date) -> String {
+        self.string(from: date, relativeTo: now, locale: Locale(identifier: "en_US_POSIX"))
+    }
+
     public static func string(from date: Date, relativeTo now: Date, locale: Locale? = nil) -> String {
         let localizer = RepoBarLocalization.localizer(locale: locale)
         let interval = date.timeIntervalSince(now)

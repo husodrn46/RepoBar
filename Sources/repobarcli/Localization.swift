@@ -14,7 +14,10 @@ struct CLILocalizer: @unchecked Sendable {
         let language = self.locale.language.languageCode?.identifier ?? "en"
         let localization = self.bundle.localizations.contains(language) ? language : "en"
         let localizedBundle = self.bundle.path(forResource: localization, ofType: "lproj").flatMap(Bundle.init(path:)) ?? self.bundle
-        return String(format: localizedBundle.localizedString(forKey: key, value: nil, table: nil), locale: self.locale, arguments: arguments)
+        let value = localizedBundle.localizedString(forKey: key, value: nil, table: nil)
+        guard arguments.isEmpty == false else { return value }
+
+        return String(format: value, locale: self.locale, arguments: arguments)
     }
 }
 

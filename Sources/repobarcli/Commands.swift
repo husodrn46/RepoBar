@@ -674,13 +674,14 @@ struct StatusCommand: CommanderRunnableCommand {
             let expiresAt = tokens?.expiresAt
             let expired = expiresAt.map { $0 <= now }
             let expiresIn = expiresAt.map { RelativeFormatter.string(from: $0, relativeTo: now) }
+            let machineExpiresIn = expiresAt.map { RelativeFormatter.machineString(from: $0, relativeTo: now) }
             let authenticated = tokens != nil || pat != nil
             if self.output.jsonOutput {
                 let output = StatusOutput(
                     authenticated: authenticated,
                     host: resolved.host.absoluteString,
                     expiresAt: expiresAt,
-                    expiresIn: expiresIn,
+                    expiresIn: machineExpiresIn,
                     expired: expired
                 )
                 let encoder = JSONEncoder()
@@ -736,13 +737,14 @@ struct StatusCommand: CommanderRunnableCommand {
         let expiresAt = tokens.expiresAt
         let expired = expiresAt.map { $0 <= now }
         let expiresIn = expiresAt.map { RelativeFormatter.string(from: $0, relativeTo: now) }
+        let machineExpiresIn = expiresAt.map { RelativeFormatter.machineString(from: $0, relativeTo: now) }
 
         if self.output.jsonOutput {
             let output = StatusOutput(
                 authenticated: true,
                 host: host,
                 expiresAt: expiresAt,
-                expiresIn: expiresIn,
+                expiresIn: machineExpiresIn,
                 expired: expired
             )
             let encoder = JSONEncoder()
