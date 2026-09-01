@@ -59,6 +59,7 @@ struct MarkdownCommand: CommanderRunnableCommand {
             plain: self.plain
         )
         let output = renderMarkdown(markdown, request: request)
-        print(output)
+        // Rendered Markdown is user content; never run it through CLI prose localization.
+        Swift.print(output)
     }
 }

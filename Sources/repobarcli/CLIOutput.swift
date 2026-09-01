@@ -204,7 +204,8 @@ func renderJSONData(_ rows: [RepoRow], baseHost: URL) throws -> Data {
 func renderJSON(_ rows: [RepoRow], baseHost: URL) throws {
     let data = try renderJSONData(rows, baseHost: baseHost)
     if let json = String(data: data, encoding: .utf8) {
-        print(json)
+        // JSON is a machine-readable contract and must remain byte-for-byte stable.
+        Swift.print(json)
     }
 }
 
