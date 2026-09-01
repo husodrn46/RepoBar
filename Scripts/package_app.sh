@@ -67,15 +67,17 @@ if [ -f "${CLI_BINARY}" ]; then
   chmod +x "${APP_BUNDLE}/Contents/MacOS/repobarcli" || true
 fi
 
-RESOURCE_BUNDLE="${BUILD_DIR}/${APP_NAME}_${APP_NAME}.bundle"
-if [ -d "${RESOURCE_BUNDLE}" ] && [ -n "$(find "${RESOURCE_BUNDLE}" -type f -print -quit 2>/dev/null || true)" ]; then
-  log "==> Installing resources: $(basename "${RESOURCE_BUNDLE}")"
-  if command -v ditto >/dev/null 2>&1; then
-    ditto "${RESOURCE_BUNDLE}" "${APP_BUNDLE}/$(basename "${RESOURCE_BUNDLE}")"
-  else
-    cp -R "${RESOURCE_BUNDLE}" "${APP_BUNDLE}/"
+for RESOURCE_NAME in RepoBar_RepoBar RepoBar_RepoBarCore RepoBar_repobarcli; do
+  RESOURCE_BUNDLE="${BUILD_DIR}/${RESOURCE_NAME}.bundle"
+  if [ -d "${RESOURCE_BUNDLE}" ] && [ -n "$(find "${RESOURCE_BUNDLE}" -type f -print -quit 2>/dev/null || true)" ]; then
+    log "==> Installing resources: $(basename "${RESOURCE_BUNDLE}")"
+    if command -v ditto >/dev/null 2>&1; then
+      ditto "${RESOURCE_BUNDLE}" "${APP_BUNDLE}/$(basename "${RESOURCE_BUNDLE}")"
+    else
+      cp -R "${RESOURCE_BUNDLE}" "${APP_BUNDLE}/"
+    fi
   fi
-fi
+done
 
 if [ -f "${ICON_TARGET}" ]; then
   log "==> Installing app icon"

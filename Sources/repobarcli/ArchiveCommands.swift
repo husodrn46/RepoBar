@@ -61,7 +61,7 @@ struct ArchivesStatusCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one archive name can be specified")
+            throw ValidationError(cliText("Only one archive name can be specified"))
         }
         self.name = values.positional.first
     }
@@ -115,7 +115,7 @@ struct ArchivesValidateCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one archive name can be specified")
+            throw ValidationError(cliText("Only one archive name can be specified"))
         }
         self.name = values.positional.first
     }
@@ -137,7 +137,7 @@ struct ArchivesValidateCommand: CommanderRunnableCommand {
         let invalid = statuses.filter { !$0.configValid }
         if invalid.isEmpty == false {
             let names = invalid.map(\.name).joined(separator: ", ")
-            throw ValidationError("Invalid archive configuration: \(names)")
+            throw ValidationError(cliText("Invalid archive configuration: \(names)"))
         }
     }
 }
@@ -159,7 +159,7 @@ struct ArchivesUpdateCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one archive name can be specified")
+            throw ValidationError(cliText("Only one archive name can be specified"))
         }
         self.name = values.positional.first
     }
@@ -169,7 +169,7 @@ struct ArchivesUpdateCommand: CommanderRunnableCommand {
         let store = cliSettingsStore()
         var settings = store.load()
         guard let index = settings.githubArchives.sources.firstIndex(where: { $0.name.equalsCaseInsensitive(name) || $0.id == name }) else {
-            throw ValidationError("Archive not found: \(name)")
+            throw ValidationError(cliText("Archive not found: \(name)"))
         }
 
         let update = try GitHubArchiveStore.update(source: settings.githubArchives.sources[index])
@@ -225,7 +225,7 @@ struct ArchivesAddCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one archive repository can be specified")
+            throw ValidationError(cliText("Only one archive repository can be specified"))
         }
         self.repository = values.positional.first
         self.repoPath = try values.decodeOption("repoPath") ?? values.decodeOption("repo")
@@ -245,10 +245,10 @@ struct ArchivesAddCommand: CommanderRunnableCommand {
             databasePath: self.databasePath
         )
         if settings.githubArchives.sources.contains(where: { $0.name.equalsCaseInsensitive(source.name) }) {
-            throw ValidationError("Archive already exists: \(source.name)")
+            throw ValidationError(cliText("Archive already exists: \(source.name)"))
         }
         if settings.githubArchives.sources.contains(where: { GitHubArchiveStore.sameArchiveLocation($0, source) }) {
-            throw ValidationError("Archive source already exists for this repository")
+            throw ValidationError(cliText("Archive source already exists for this repository"))
         }
 
         settings.githubArchives.sources.append(source)
@@ -282,10 +282,10 @@ struct ArchivesAddCommand: CommanderRunnableCommand {
             .compactMap { value in value?.isEmpty == false ? value : nil }
             .first
         guard let baseRepository else {
-            throw ValidationError("Missing archive repository")
+            throw ValidationError(cliText("Missing archive repository"))
         }
         guard var source = GitHubArchiveStore.source(repository: baseRepository) else {
-            throw ValidationError("Invalid archive repository: \(baseRepository)")
+            throw ValidationError(cliText("Invalid archive repository: \(baseRepository)"))
         }
 
         let usesCustomName = hasExplicitLocation && sourceText?.isEmpty == false
@@ -335,19 +335,19 @@ struct ArchivesAddCommand: CommanderRunnableCommand {
             if allowRemoteCloneTarget {
                 return
             }
-            throw ValidationError("Archive repository path does not exist: \(PathFormatter.displayString(expanded))")
+            throw ValidationError(cliText("Archive repository path does not exist: \(PathFormatter.displayString(expanded))"))
         }
 
         let gitPath = URL(fileURLWithPath: expanded).appending(path: ".git").path
         guard allowRemoteCloneTarget || fileManager.fileExists(atPath: gitPath) else {
-            throw ValidationError("Archive repository path is not a Git working tree: \(PathFormatter.displayString(expanded))")
+            throw ValidationError(cliText("Archive repository path is not a Git working tree: \(PathFormatter.displayString(expanded))"))
         }
     }
 
     private nonisolated static func validatedRemote(_ remote: String) throws -> String {
         let trimmed = remote.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmed.isEmpty == false else {
-            throw ValidationError("Archive remote URL is empty")
+            throw ValidationError(cliText("Archive remote URL is empty"))
         }
 
         if trimmed.hasPrefix("git@"), trimmed.contains(":") {
@@ -358,7 +358,7 @@ struct ArchivesAddCommand: CommanderRunnableCommand {
               ["https", "http", "ssh", "git"].contains(scheme),
               url.host?.isEmpty == false
         else {
-            throw ValidationError("Invalid archive remote URL: \(remote)")
+            throw ValidationError(cliText("Invalid archive remote URL: \(remote)"))
         }
 
         return trimmed
@@ -382,7 +382,7 @@ struct ArchivesRemoveCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one archive name can be specified")
+            throw ValidationError(cliText("Only one archive name can be specified"))
         }
         self.name = values.positional.first
     }
@@ -394,7 +394,7 @@ struct ArchivesRemoveCommand: CommanderRunnableCommand {
         let before = settings.githubArchives.sources.count
         settings.githubArchives.sources.removeAll { $0.name.equalsCaseInsensitive(name) || $0.id == name }
         guard settings.githubArchives.sources.count != before else {
-            throw ValidationError("Archive not found: \(name)")
+            throw ValidationError(cliText("Archive not found: \(name)"))
         }
 
         store.save(settings)
@@ -423,7 +423,7 @@ struct ArchivesEnableCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one archive name can be specified")
+            throw ValidationError(cliText("Only one archive name can be specified"))
         }
         self.name = values.positional.first
     }
@@ -437,7 +437,7 @@ struct ArchivesEnableCommand: CommanderRunnableCommand {
         let store = cliSettingsStore()
         var settings = store.load()
         guard let index = settings.githubArchives.sources.firstIndex(where: { $0.name.equalsCaseInsensitive(name) || $0.id == name }) else {
-            throw ValidationError("Archive not found: \(name)")
+            throw ValidationError(cliText("Archive not found: \(name)"))
         }
 
         settings.githubArchives.sources[index].enabled = enabled
@@ -467,7 +467,7 @@ struct ArchivesDisableCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one archive name can be specified")
+            throw ValidationError(cliText("Only one archive name can be specified"))
         }
         self.name = values.positional.first
     }
@@ -477,7 +477,7 @@ struct ArchivesDisableCommand: CommanderRunnableCommand {
         let store = cliSettingsStore()
         var settings = store.load()
         guard let index = settings.githubArchives.sources.firstIndex(where: { $0.name.equalsCaseInsensitive(name) || $0.id == name }) else {
-            throw ValidationError("Archive not found: \(name)")
+            throw ValidationError(cliText("Archive not found: \(name)"))
         }
 
         settings.githubArchives.sources[index].enabled = false

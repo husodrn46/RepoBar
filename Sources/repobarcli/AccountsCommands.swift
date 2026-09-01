@@ -19,15 +19,15 @@ enum AccountResolver {
             if let shorthand = Self.matchShorthand(input, in: settings.accounts) {
                 return shorthand
             }
-            throw ValidationError("Unknown account: \(input). Run `repobar accounts list` to see configured accounts.")
+            throw ValidationError(cliText("Unknown account: \(input). Run `repobar accounts list` to see configured accounts."))
         }
         if let active = settings.resolvedActiveAccount() {
             return active
         }
         if settings.accounts.isEmpty {
-            throw ValidationError("No accounts configured. Run `repobar login` first.")
+            throw ValidationError(cliText("No accounts configured. Run `repobar login` first."))
         }
-        throw ValidationError("Multiple accounts configured. Pass --account <id> or run `repobar accounts use <id>`.")
+        throw ValidationError(cliText("Multiple accounts configured. Pass --account <id> or run `repobar accounts use <id>`."))
     }
 
     static func matchShorthand(_ input: String, in accounts: [Account]) -> Account? {
@@ -92,7 +92,7 @@ struct AccountsUseCommand: CommanderRunnableCommand {
 
     mutating func bind(_ values: ParsedValues) throws {
         if values.positional.count > 1 {
-            throw ValidationError("Only one account identifier can be specified")
+            throw ValidationError(cliText("Only one account identifier can be specified"))
         }
         self.target = values.positional.first
     }
@@ -122,7 +122,7 @@ struct AccountsRemoveCommand: CommanderRunnableCommand {
 
     mutating func bind(_ values: ParsedValues) throws {
         if values.positional.count > 1 {
-            throw ValidationError("Only one account identifier can be specified")
+            throw ValidationError(cliText("Only one account identifier can be specified"))
         }
         self.target = values.positional.first
     }

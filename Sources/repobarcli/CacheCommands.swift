@@ -23,7 +23,7 @@ struct CacheStatusCommand: CommanderRunnableCommand {
 
     mutating func run() async throws {
         if self.limit < 0 {
-            throw ValidationError("--limit must be >= 0")
+            throw ValidationError(cliText("--limit must be >= 0"))
         }
 
         let summary = try RepoBarPersistentCache.summary(limit: self.limit)
@@ -95,7 +95,7 @@ struct RateLimitsCommand: CommanderRunnableCommand {
 
     mutating func run() async throws {
         if self.limit < 0 {
-            throw ValidationError("--limit must be >= 0")
+            throw ValidationError(cliText("--limit must be >= 0"))
         }
 
         let summary = try RepoBarPersistentCache.summary(limit: self.limit)

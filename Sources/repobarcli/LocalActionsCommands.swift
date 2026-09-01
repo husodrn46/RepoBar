@@ -19,7 +19,7 @@ struct LocalSyncCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or path can be specified")
+            throw ValidationError(cliText("Only one repository or path can be specified"))
         }
         self.target = values.positional.first
     }
@@ -69,7 +69,7 @@ struct LocalRebaseCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or path can be specified")
+            throw ValidationError(cliText("Only one repository or path can be specified"))
         }
         self.target = values.positional.first
     }
@@ -119,7 +119,7 @@ struct LocalResetCommand: CommanderRunnableCommand {
         self.output.bind(values)
         self.assumeYes = values.flag("assumeYes")
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or path can be specified")
+            throw ValidationError(cliText("Only one repository or path can be specified"))
         }
         self.target = values.positional.first
     }
@@ -170,7 +170,7 @@ struct LocalBranchesCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or path can be specified")
+            throw ValidationError(cliText("Only one repository or path can be specified"))
         }
         self.target = values.positional.first
     }
@@ -218,7 +218,7 @@ struct WorktreesCommand: CommanderRunnableCommand {
     mutating func bind(_ values: ParsedValues) throws {
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or path can be specified")
+            throw ValidationError(cliText("Only one repository or path can be specified"))
         }
         self.target = values.positional.first
     }
@@ -261,7 +261,7 @@ struct OpenFinderCommand: CommanderRunnableCommand {
 
     mutating func bind(_ values: ParsedValues) throws {
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or path can be specified")
+            throw ValidationError(cliText("Only one repository or path can be specified"))
         }
         self.target = values.positional.first
     }
@@ -288,7 +288,7 @@ struct OpenTerminalCommand: CommanderRunnableCommand {
 
     mutating func bind(_ values: ParsedValues) throws {
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or path can be specified")
+            throw ValidationError(cliText("Only one repository or path can be specified"))
         }
         self.target = values.positional.first
     }
@@ -331,7 +331,7 @@ struct CheckoutCommand: CommanderRunnableCommand {
         self.destination = try values.decodeOption("destination")
         self.openAfter = values.flag("openAfter")
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
@@ -344,7 +344,7 @@ struct CheckoutCommand: CommanderRunnableCommand {
 
         let rootPath = self.destination == nil ? (self.root ?? settings.localProjects.rootPath) : nil
         if self.destination == nil, rootPath?.isEmpty ?? true {
-            throw ValidationError("Set a Local Projects root in Settings or pass --root")
+            throw ValidationError(cliText("Set a Local Projects root in Settings or pass --root"))
         }
 
         let destinationURL: URL
@@ -357,7 +357,7 @@ struct CheckoutCommand: CommanderRunnableCommand {
         }
 
         if FileManager.default.fileExists(atPath: destinationURL.path) {
-            throw ValidationError("Destination already exists: \(PathFormatter.displayString(destinationURL.path))")
+            throw ValidationError(cliText("Destination already exists: \(PathFormatter.displayString(destinationURL.path))"))
         }
 
         var remoteURL = host.appendingPathComponent(repo.fullName)

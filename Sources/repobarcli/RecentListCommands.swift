@@ -23,14 +23,14 @@ struct ReleasesCommand: CommanderRunnableCommand {
         self.limit = try values.decodeOption("limit") ?? 20
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let repo = try requireRepoIdentifier(self.repoName)
 
@@ -77,14 +77,14 @@ struct CICommand: CommanderRunnableCommand {
         self.limit = try values.decodeOption("limit") ?? 20
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let repo = try requireRepoIdentifier(self.repoName)
 
@@ -131,14 +131,14 @@ struct DiscussionsCommand: CommanderRunnableCommand {
         self.limit = try values.decodeOption("limit") ?? 20
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let repo = try requireRepoIdentifier(self.repoName)
 
@@ -185,14 +185,14 @@ struct TagsCommand: CommanderRunnableCommand {
         self.limit = try values.decodeOption("limit") ?? 20
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let repo = try requireRepoIdentifier(self.repoName)
 
@@ -239,14 +239,14 @@ struct BranchesCommand: CommanderRunnableCommand {
         self.limit = try values.decodeOption("limit") ?? 20
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let repo = try requireRepoIdentifier(self.repoName)
 
@@ -293,14 +293,14 @@ struct ContributorsCommand: CommanderRunnableCommand {
         self.limit = try values.decodeOption("limit") ?? 20
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let repo = try requireRepoIdentifier(self.repoName)
 
@@ -355,14 +355,14 @@ struct CommitsCommand: CommanderRunnableCommand {
         self.scope = try values.decodeOption("scope")
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or login can be specified")
+            throw ValidationError(cliText("Only one repository or login can be specified"))
         }
         self.target = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let context = try await makeAuthenticatedClient()
 
@@ -451,20 +451,20 @@ struct ActivityCommand: CommanderRunnableCommand {
         self.includeRepos = values.flag("includeRepos")
         self.output.bind(values)
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository or login can be specified")
+            throw ValidationError(cliText("Only one repository or login can be specified"))
         }
         self.target = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let context = try await makeAuthenticatedClient()
 
         if let target, target.contains("/") {
             if self.includeRepos {
-                throw ValidationError("--include-repos is only available for global activity")
+                throw ValidationError(cliText("--include-repos is only available for global activity"))
             }
             let repoID = try parseRepoName(target)
             let repo = try await context.client.fullRepository(owner: repoID.owner, name: repoID.name)

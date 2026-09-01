@@ -34,18 +34,18 @@ struct MarkdownCommand: CommanderRunnableCommand {
         self.noColor = values.flag("noColor")
 
         if values.positional.count > 1 {
-            throw ValidationError("Only one markdown file can be specified")
+            throw ValidationError(cliText("Only one markdown file can be specified"))
         }
         self.path = values.positional.first
     }
 
     mutating func run() async throws {
         guard let path, path.isEmpty == false else {
-            throw ValidationError("Missing markdown file path")
+            throw ValidationError(cliText("Missing markdown file path"))
         }
 
         if let width, width <= 0 {
-            throw ValidationError("--width must be greater than 0")
+            throw ValidationError(cliText("--width must be greater than 0"))
         }
 
         let markdown = try String(contentsOfFile: path, encoding: .utf8)

@@ -26,7 +26,7 @@ struct ReferenceTranslateCommand: CommanderRunnableCommand {
 
     mutating func run() async throws {
         guard let text, text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false else {
-            throw ValidationError("Missing reference text")
+            throw ValidationError(cliText("Missing reference text"))
         }
 
         let repositoryFullName = await GitHubReferenceLocalContext.repositoryFullName(in: text)

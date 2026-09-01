@@ -36,7 +36,7 @@ extension ParsedValues {
     func decodeOption<T: ExpressibleFromArgument>(_ label: String) throws -> T? {
         guard let raw = options[label]?.last else { return nil }
         guard let value = T(argument: raw) else {
-            throw ValidationError("Invalid value for --\(label): \(raw)")
+            throw ValidationError(cliText("Invalid value for --\(label): \(raw)"))
         }
 
         return value
@@ -214,14 +214,14 @@ func openPath(_ path: String, application: String? = nil) throws {
 
 func parseHost(_ raw: String) throws -> URL {
     guard var components = URLComponents(string: raw) else {
-        throw ValidationError("Invalid host: \(raw)")
+        throw ValidationError(cliText("Invalid host: \(raw)"))
     }
 
     if components.scheme == nil {
         components.scheme = "https"
     }
     guard let url = components.url else {
-        throw ValidationError("Invalid host: \(raw)")
+        throw ValidationError(cliText("Invalid host: \(raw)"))
     }
 
     return url

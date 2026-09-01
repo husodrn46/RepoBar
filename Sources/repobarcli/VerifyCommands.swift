@@ -91,7 +91,7 @@ struct RepoCommand: CommanderRunnableCommand {
         self.output.bind(values)
 
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
@@ -188,14 +188,14 @@ struct IssuesCommand: CommanderRunnableCommand {
         self.output.bind(values)
 
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let repoID = try requireRepoIdentifier(self.repoName)
 
@@ -260,14 +260,14 @@ struct PullsCommand: CommanderRunnableCommand {
         self.output.bind(values)
 
         if values.positional.count > 1 {
-            throw ValidationError("Only one repository can be specified")
+            throw ValidationError(cliText("Only one repository can be specified"))
         }
         self.repoName = values.positional.first
     }
 
     mutating func run() async throws {
         if self.limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         let repoID = try requireRepoIdentifier(self.repoName)
 

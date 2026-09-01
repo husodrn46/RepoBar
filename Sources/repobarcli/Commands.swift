@@ -139,22 +139,22 @@ struct ReposCommand: CommanderRunnableCommand {
         self.ownerFilter = RepoOwnerFilter.parse(rawOwners)
         self.mine = values.flag("mine")
         if self.ownerFilter == nil, rawOwners.isEmpty == false {
-            throw ValidationError("--owner must include at least one login")
+            throw ValidationError(cliText("--owner must include at least one login"))
         }
     }
 
     mutating func run() async throws {
         if let limit, limit <= 0 {
-            throw ValidationError("--limit must be greater than 0")
+            throw ValidationError(cliText("--limit must be greater than 0"))
         }
         if self.age <= 0 {
-            throw ValidationError("--age must be greater than 0")
+            throw ValidationError(cliText("--age must be greater than 0"))
         }
         if self.pinnedOnly, let scope, scope != .pinned {
-            throw ValidationError("--pinned-only cannot be combined with --scope \(scope.rawValue)")
+            throw ValidationError(cliText("--pinned-only cannot be combined with --scope \(scope.rawValue)"))
         }
         if self.filter != nil, self.onlyWith != nil {
-            throw ValidationError("--filter cannot be combined with --only-with")
+            throw ValidationError(cliText("--filter cannot be combined with --only-with"))
         }
 
         if self.output.jsonOutput == false, self.output.useColor {
@@ -389,7 +389,7 @@ struct LoginCommand: CommanderRunnableCommand {
 
     mutating func run() async throws {
         if let loopbackPort, loopbackPort <= 0 || loopbackPort >= 65536 {
-            throw ValidationError("--loopback-port must be between 1 and 65535")
+            throw ValidationError(cliText("--loopback-port must be between 1 and 65535"))
         }
 
         let store = cliSettingsStore()
@@ -554,7 +554,7 @@ struct ImportGHTokenCommand: CommanderRunnableCommand {
         }
         let normalizedHost = try OAuthLoginFlow.normalizeHost(rawHost)
         guard let ghHostname = normalizedHost.host, ghHostname.isEmpty == false else {
-            throw ValidationError("Invalid host: \(rawHost.absoluteString)")
+            throw ValidationError(cliText("Invalid host: \(rawHost.absoluteString)"))
         }
 
         // Get token from gh CLI
@@ -569,18 +569,18 @@ struct ImportGHTokenCommand: CommanderRunnableCommand {
             try process.run()
             process.waitUntilExit()
         } catch {
-            throw ValidationError("Failed to run 'gh auth token'. Is GitHub CLI installed?")
+            throw ValidationError(cliText("Failed to run 'gh auth token'. Is GitHub CLI installed?"))
         }
 
         guard process.terminationStatus == 0 else {
-            throw ValidationError("'gh auth token' failed. Please run 'gh auth login' first.")
+            throw ValidationError(cliText("'gh auth token' failed. Please run 'gh auth login' first."))
         }
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         guard let tokenString = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
               !tokenString.isEmpty
         else {
-            throw ValidationError("No token returned from gh CLI. Please run 'gh auth login' first.")
+            throw ValidationError(cliText("No token returned from gh CLI. Please run 'gh auth login' first."))
         }
 
         // gh tokens don't expire, so leave expiry unset and skip refresh.

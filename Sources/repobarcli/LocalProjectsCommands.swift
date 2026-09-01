@@ -38,10 +38,10 @@ struct LocalProjectsCommand: CommanderRunnableCommand {
 
     mutating func run() async throws {
         if self.depth < 0 {
-            throw ValidationError("--depth must be >= 0")
+            throw ValidationError(cliText("--depth must be >= 0"))
         }
         if let limit, limit <= 0 {
-            throw ValidationError("--limit must be > 0")
+            throw ValidationError(cliText("--limit must be > 0"))
         }
 
         let settings = cliSettingsStore().load()
@@ -51,7 +51,7 @@ struct LocalProjectsCommand: CommanderRunnableCommand {
         let resolvedRoot = PathFormatter.expandTilde(rootPath)
         var isDirectory: ObjCBool = false
         guard FileManager.default.fileExists(atPath: resolvedRoot, isDirectory: &isDirectory), isDirectory.boolValue else {
-            throw ValidationError("Local projects root does not exist: \(PathFormatter.displayString(resolvedRoot))")
+            throw ValidationError(cliText("Local projects root does not exist: \(PathFormatter.displayString(resolvedRoot))"))
         }
 
         let service = LocalProjectsService()
