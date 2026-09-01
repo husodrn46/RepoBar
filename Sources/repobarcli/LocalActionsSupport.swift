@@ -170,8 +170,8 @@ func confirmHardReset(path: String) throws {
         throw ValidationError(cliText("Refusing to hard reset in non-interactive mode without --yes"))
     }
 
-    print("Hard reset \(path) to upstream. This is destructive.")
-    print("Type 'reset' to continue: ", terminator: "")
+    cliPrint("Hard reset \(path) to upstream. This is destructive.")
+    cliPrint("Type 'reset' to continue: ", terminator: "")
     guard let response = readLine(), response.lowercased() == "reset" else {
         throw ValidationError(cliText("Reset cancelled"))
     }

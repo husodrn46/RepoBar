@@ -69,7 +69,7 @@ func prepareRows(repos: [Repository], now: Date = Date()) -> [RepoRow] {
 
 func renderTable(_ rows: [RepoRow], context: RepoTableContext) {
     for line in tableLines(rows, context: context) {
-        print(line)
+        Swift.print(line)
     }
 }
 

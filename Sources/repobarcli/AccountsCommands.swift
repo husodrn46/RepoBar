@@ -68,13 +68,13 @@ struct AccountsListCommand: CommanderRunnableCommand {
         }
 
         if settings.accounts.isEmpty {
-            print("No accounts configured. Run `repobar login` first.")
+            cliPrint("No accounts configured. Run `repobar login` first.")
             return
         }
         for account in settings.accounts {
             let marker = account.id == activeAccountID ? "*" : " "
             let method = account.authMethod.rawValue
-            print("\(marker) \(account.id)  [\(method)]  \(account.host.host ?? "github.com")")
+            cliPrint("\(marker) \(account.id)  [\(method)]  \(account.host.host ?? "github.com")")
         }
     }
 }
@@ -105,7 +105,7 @@ struct AccountsUseCommand: CommanderRunnableCommand {
         settings.activeAccountID = account.id
         mirrorActiveAccountIntoSettings(account, settings: &settings)
         store.save(settings)
-        print("Active account set to \(account.id).")
+        cliPrint("Active account set to \(account.id).")
     }
 }
 
@@ -140,7 +140,7 @@ struct AccountsRemoveCommand: CommanderRunnableCommand {
         settings.accountRepoLists.pinnedByAccount.removeValue(forKey: account.id)
         settings.accountRepoLists.hiddenByAccount.removeValue(forKey: account.id)
         store.save(settings)
-        print("Removed account \(account.id).")
+        cliPrint("Removed account \(account.id).")
     }
 }
 

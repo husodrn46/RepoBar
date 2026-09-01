@@ -174,9 +174,9 @@ extension String {
 
 func printError(_ message: String) {
     if Ansi.supportsColor {
-        print(Ansi.red.wrap("Error: \(message)"))
+        cliPrint(Ansi.red.wrap("Error: \(message)"))
     } else {
-        print("Error: \(message)")
+        cliPrint("Error: \(message)")
     }
 }
 
@@ -186,7 +186,7 @@ func printJSON(_ output: some Encodable) throws {
     encoder.dateEncodingStrategy = .iso8601
     let data = try encoder.encode(output)
     if let json = String(data: data, encoding: .utf8) {
-        print(json)
+        Swift.print(json)
     }
 }
 

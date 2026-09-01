@@ -789,7 +789,7 @@ func printHelp(_ target: HelpTarget) {
           repobar status [--json]
         """
     }
-    print(localizedHelp(text))
+    cliPrint(localizedHelp(text))
 }
 
 private func localizedHelp(_ text: String) -> String {

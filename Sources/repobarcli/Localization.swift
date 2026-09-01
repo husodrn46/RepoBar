@@ -78,6 +78,6 @@ func cliText(_ english: String, locale: Locale? = nil) -> String {
 
 /// Human-readable CLI output passes through the localization boundary. JSON and
 /// stable machine output contain no catalog keys and therefore pass through byte-for-byte.
-func print(_ value: String, terminator: String = "\n") {
+func cliPrint(_ value: String, terminator: String = "\n") {
     Swift.print(cliText(value), terminator: terminator)
 }

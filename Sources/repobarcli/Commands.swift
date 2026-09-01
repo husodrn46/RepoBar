@@ -158,7 +158,7 @@ struct ReposCommand: CommanderRunnableCommand {
         }
 
         if self.output.jsonOutput == false, self.output.useColor {
-            print("RepoBar CLI")
+            cliPrint("RepoBar CLI")
         }
 
         let context = try await makeAuthenticatedClient()
@@ -202,7 +202,7 @@ struct ReposCommand: CommanderRunnableCommand {
                 if self.output.jsonOutput {
                     try renderJSON([], baseHost: baseHost)
                 } else {
-                    print("No pinned repositories to show.")
+                    cliPrint("No pinned repositories to show.")
                 }
                 return
             }
@@ -223,7 +223,7 @@ struct ReposCommand: CommanderRunnableCommand {
                 if self.output.jsonOutput {
                     try renderJSON([], baseHost: baseHost)
                 } else {
-                    print("No hidden repositories to show.")
+                    cliPrint("No hidden repositories to show.")
                 }
                 return
             }
@@ -460,7 +460,7 @@ struct LoginCommand: CommanderRunnableCommand {
         settings.activeAccountID = account.id
         store.save(settings)
 
-        print("Login succeeded; tokens stored for \(account.id).")
+        cliPrint("Login succeeded; tokens stored for \(account.id).")
     }
 }
 
@@ -500,13 +500,13 @@ struct LogoutCommand: CommanderRunnableCommand {
             settings.accounts = []
             settings.activeAccountID = nil
             store.save(settings)
-            print("Logged out of all accounts.")
+            cliPrint("Logged out of all accounts.")
             return
         }
 
         if settings.accounts.isEmpty {
             TokenStore.shared.clear()
-            print("Logged out.")
+            cliPrint("Logged out.")
             return
         }
 
@@ -518,7 +518,7 @@ struct LogoutCommand: CommanderRunnableCommand {
         }
         mirrorResolvedActiveAccount(settings: &settings)
         store.save(settings)
-        print("Logged out of \(resolved.id).")
+        cliPrint("Logged out of \(resolved.id).")
     }
 }
 
@@ -625,9 +625,9 @@ struct ImportGHTokenCommand: CommanderRunnableCommand {
         settings.activeAccountID = account.id
         store.save(settings)
 
-        print("Successfully imported gh CLI token for \(account.id).")
-        print("Token expires: unknown")
-        print("\nNote: Re-run this command if your gh token changes or if you re-authenticate with 'gh auth login'.")
+        cliPrint("Successfully imported gh CLI token for \(account.id).")
+        cliPrint("Token expires: unknown")
+        cliPrint("\nNote: Re-run this command if your gh token changes or if you re-authenticate with 'gh auth login'.")
     }
 }
 
@@ -688,19 +688,19 @@ struct StatusCommand: CommanderRunnableCommand {
                 encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
                 let data = try encoder.encode(output)
                 if let json = String(data: data, encoding: .utf8) {
-                    print(json)
+                    Swift.print(json)
                 }
             } else if authenticated == false {
-                print("Logged out (\(resolved.id)).")
+                cliPrint("Logged out (\(resolved.id)).")
             } else {
-                print("Logged in as \(resolved.id).")
-                print("Host: \(resolved.host.absoluteString)")
+                cliPrint("Logged in as \(resolved.id).")
+                cliPrint("Host: \(resolved.host.absoluteString)")
                 if let expiresAt {
                     let state = expired == true ? "expired" : "expires"
                     let label = expiresIn ?? expiresAt.formatted()
-                    print("\(state.capitalized): \(label)")
+                    cliPrint("\(state.capitalized): \(label)")
                 } else {
-                    print("Expires: unknown")
+                    cliPrint("Expires: unknown")
                 }
             }
             return
@@ -723,10 +723,10 @@ struct StatusCommand: CommanderRunnableCommand {
                 encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
                 let data = try encoder.encode(output)
                 if let json = String(data: data, encoding: .utf8) {
-                    print(json)
+                    Swift.print(json)
                 }
             } else {
-                print("Logged out.")
+                cliPrint("Logged out.")
             }
             return
         }
@@ -751,17 +751,17 @@ struct StatusCommand: CommanderRunnableCommand {
             encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             let data = try encoder.encode(output)
             if let json = String(data: data, encoding: .utf8) {
-                print(json)
+                Swift.print(json)
             }
         } else {
-            print("Logged in.")
-            print("Host: \(host)")
+            cliPrint("Logged in.")
+            cliPrint("Host: \(host)")
             if let expiresAt {
                 let state = expired == true ? "expired" : "expires"
                 let label = expiresIn ?? expiresAt.formatted()
-                print("\(state.capitalized): \(label)")
+                cliPrint("\(state.capitalized): \(label)")
             } else {
-                print("Expires: unknown")
+                cliPrint("Expires: unknown")
             }
         }
     }

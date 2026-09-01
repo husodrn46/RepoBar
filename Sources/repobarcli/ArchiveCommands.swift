@@ -26,7 +26,7 @@ struct ArchivesListCommand: CommanderRunnableCommand {
 
         let sources = settings.githubArchives.sources
         if sources.isEmpty {
-            print("No GitHub archives configured.")
+            cliPrint("No GitHub archives configured.")
             return
         }
 
@@ -35,11 +35,11 @@ struct ArchivesListCommand: CommanderRunnableCommand {
             let repo = source.localRepositoryPath.map(PathFormatter.displayString) ?? "-"
             let remote = source.remoteURL ?? "-"
             let db = PathFormatter.displayString(source.importedDatabasePath)
-            print("\(source.name) (\(state))")
-            print("  repo: \(repo)")
-            print("  remote: \(remote)")
-            print("  branch: \(source.branch)")
-            print("  db: \(db)")
+            cliPrint("\(source.name) (\(state))")
+            cliPrint("  repo: \(repo)")
+            cliPrint("  remote: \(remote)")
+            cliPrint("  branch: \(source.branch)")
+            cliPrint("  db: \(db)")
         }
     }
 }
@@ -76,23 +76,23 @@ struct ArchivesStatusCommand: CommanderRunnableCommand {
         }
 
         if statuses.isEmpty {
-            print("No GitHub archives configured.")
+            cliPrint("No GitHub archives configured.")
             return
         }
         for status in statuses {
-            print("\(status.name): \(status.readyForRead ? "ready" : "not ready")")
-            print("  enabled: \(status.enabled ? "yes" : "no")")
-            print("  repo: \(status.localRepositoryPath ?? "-")")
-            print("  manifest: \(status.manifestExists ? "yes" : "no")")
-            print("  db: \(status.databaseExists ? "yes" : "no")")
+            cliPrint("\(status.name): \(status.readyForRead ? "ready" : "not ready")")
+            cliPrint("  enabled: \(status.enabled ? "yes" : "no")")
+            cliPrint("  repo: \(status.localRepositoryPath ?? "-")")
+            cliPrint("  manifest: \(status.manifestExists ? "yes" : "no")")
+            cliPrint("  db: \(status.databaseExists ? "yes" : "no")")
             if let importedRowCount = status.importedRowCount {
-                print("  rows: \(importedRowCount)")
+                cliPrint("  rows: \(importedRowCount)")
             }
             if let lastImportAt = status.lastImportAt {
-                print("  last import: \(GitHubArchiveStore.archiveDateString(lastImportAt))")
+                cliPrint("  last import: \(GitHubArchiveStore.archiveDateString(lastImportAt))")
             }
             if status.issues.isEmpty == false {
-                print("  issues: \(status.issues.joined(separator: "; "))")
+                cliPrint("  issues: \(status.issues.joined(separator: "; "))")
             }
         }
     }
@@ -127,10 +127,10 @@ struct ArchivesValidateCommand: CommanderRunnableCommand {
         if self.output.jsonOutput {
             try printJSON(payload)
         } else if statuses.isEmpty {
-            print("No GitHub archives configured.")
+            cliPrint("No GitHub archives configured.")
         } else {
             for status in statuses {
-                print("\(status.name): \(status.configValid ? "valid" : "invalid")")
+                cliPrint("\(status.name): \(status.configValid ? "valid" : "invalid")")
             }
         }
 
@@ -185,13 +185,13 @@ struct ArchivesUpdateCommand: CommanderRunnableCommand {
             return
         }
 
-        print("Updated archive \(update.source.name)")
-        print("repo: \(PathFormatter.displayString(result.snapshotPath))")
-        print("db: \(PathFormatter.displayString(result.databasePath))")
-        print("tables: \(result.tables.count)")
-        print("rows: \(result.totalRows)")
+        cliPrint("Updated archive \(update.source.name)")
+        cliPrint("repo: \(PathFormatter.displayString(result.snapshotPath))")
+        cliPrint("db: \(PathFormatter.displayString(result.databasePath))")
+        cliPrint("tables: \(result.tables.count)")
+        cliPrint("rows: \(result.totalRows)")
         if let generatedAt = result.generatedAt {
-            print("snapshot: \(GitHubArchiveStore.archiveDateString(generatedAt))")
+            cliPrint("snapshot: \(GitHubArchiveStore.archiveDateString(generatedAt))")
         }
     }
 }
@@ -262,8 +262,8 @@ struct ArchivesAddCommand: CommanderRunnableCommand {
             return
         }
 
-        print("\(action) archive \(source.name)")
-        print("db: \(PathFormatter.displayString(source.importedDatabasePath))")
+        cliPrint("\(action) archive \(source.name)")
+        cliPrint("db: \(PathFormatter.displayString(source.importedDatabasePath))")
     }
 
     nonisolated static func archiveSource(
@@ -401,7 +401,7 @@ struct ArchivesRemoveCommand: CommanderRunnableCommand {
         if self.output.jsonOutput {
             try printJSON(settings.githubArchives)
         } else {
-            print("Removed archive \(name)")
+            cliPrint("Removed archive \(name)")
         }
     }
 }
@@ -445,7 +445,7 @@ struct ArchivesEnableCommand: CommanderRunnableCommand {
         if self.output.jsonOutput {
             try printJSON(settings.githubArchives)
         } else {
-            print("\(enabled ? "Enabled" : "Disabled") archive \(settings.githubArchives.sources[index].name)")
+            cliPrint("\(enabled ? "Enabled" : "Disabled") archive \(settings.githubArchives.sources[index].name)")
         }
     }
 }
@@ -485,7 +485,7 @@ struct ArchivesDisableCommand: CommanderRunnableCommand {
         if self.output.jsonOutput {
             try printJSON(settings.githubArchives)
         } else {
-            print("Disabled archive \(settings.githubArchives.sources[index].name)")
+            cliPrint("Disabled archive \(settings.githubArchives.sources[index].name)")
         }
     }
 }

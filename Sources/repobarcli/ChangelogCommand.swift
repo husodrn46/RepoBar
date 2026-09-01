@@ -70,20 +70,20 @@ struct ChangelogCommand: CommanderRunnableCommand {
             return
         }
 
-        print("Sections: \(outputSections.count)")
+        cliPrint("Sections: \(outputSections.count)")
         for section in outputSections {
-            print("- \(section.title) (\(section.entryCount))")
+            cliPrint("- \(section.title) (\(section.entryCount))")
         }
         if let outputPresentation {
-            print("Presentation: \(outputPresentation.title)")
+            cliPrint("Presentation: \(outputPresentation.title)")
             if let badge = outputPresentation.badgeText {
-                print("Badge: \(badge)")
+                cliPrint("Badge: \(badge)")
             }
             if let detail = outputPresentation.detailText {
-                print("Detail: \(detail)")
+                cliPrint("Detail: \(detail)")
             }
         } else {
-            print("Presentation: -")
+            cliPrint("Presentation: -")
         }
     }
 }

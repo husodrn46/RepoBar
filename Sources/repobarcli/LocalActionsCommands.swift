@@ -45,10 +45,10 @@ struct LocalSyncCommand: CommanderRunnableCommand {
         }
 
         let display = resolved.displayName
-        print("Synced \(display)")
-        print("Fetch: \(result.didFetch ? "yes" : "no")")
-        print("Pull: \(result.didPull ? "yes" : "no")")
-        print("Push: \(result.didPush ? "yes" : "no")")
+        cliPrint("Synced \(display)")
+        cliPrint("Fetch: \(result.didFetch ? "yes" : "no")")
+        cliPrint("Pull: \(result.didPull ? "yes" : "no")")
+        cliPrint("Push: \(result.didPush ? "yes" : "no")")
     }
 }
 
@@ -94,7 +94,7 @@ struct LocalRebaseCommand: CommanderRunnableCommand {
             return
         }
 
-        print("Rebased \(resolved.displayName)")
+        cliPrint("Rebased \(resolved.displayName)")
     }
 }
 
@@ -149,7 +149,7 @@ struct LocalResetCommand: CommanderRunnableCommand {
             return
         }
 
-        print("Reset \(resolved.displayName)")
+        cliPrint("Reset \(resolved.displayName)")
     }
 }
 
@@ -193,10 +193,10 @@ struct LocalBranchesCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Branches: \(resolved.displayName)")
+            cliPrint("Branches: \(resolved.displayName)")
         }
         for line in localBranchesTableLines(snapshot, useColor: self.output.useColor, now: Date()) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -240,10 +240,10 @@ struct WorktreesCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Worktrees: \(resolved.displayName)")
+            cliPrint("Worktrees: \(resolved.displayName)")
         }
         for line in localWorktreesTableLines(worktrees, useColor: self.output.useColor, now: Date()) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -271,7 +271,7 @@ struct OpenFinderCommand: CommanderRunnableCommand {
         let settings = cliSettingsStore().load()
         let resolved = try await resolveLocalRepoTarget(target, settings: settings)
         try openPath(resolved.path.path)
-        print("Opened Finder at \(resolved.displayName)")
+        cliPrint("Opened Finder at \(resolved.displayName)")
     }
 }
 
@@ -298,7 +298,7 @@ struct OpenTerminalCommand: CommanderRunnableCommand {
         let settings = cliSettingsStore().load()
         let resolved = try await resolveLocalRepoTarget(target, settings: settings)
         try openTerminal(at: resolved.path, settings: settings)
-        print("Opened terminal at \(resolved.displayName)")
+        cliPrint("Opened terminal at \(resolved.displayName)")
     }
 }
 
@@ -382,6 +382,6 @@ struct CheckoutCommand: CommanderRunnableCommand {
             return
         }
 
-        print("Checked out \(repo.fullName) → \(PathFormatter.displayString(destinationURL.path))")
+        cliPrint("Checked out \(repo.fullName) → \(PathFormatter.displayString(destinationURL.path))")
     }
 }

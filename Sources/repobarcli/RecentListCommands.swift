@@ -48,10 +48,10 @@ struct ReleasesCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Releases: \(repo.fullName)")
+            cliPrint("Releases: \(repo.fullName)")
         }
         for line in releasesTableLines(releases, useColor: self.output.useColor, includeURL: self.output.plain == false, now: Date()) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -102,10 +102,10 @@ struct CICommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("CI Runs: \(repo.fullName)")
+            cliPrint("CI Runs: \(repo.fullName)")
         }
         for line in workflowRunsTableLines(runs, useColor: self.output.useColor, includeURL: self.output.plain == false, now: Date()) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -156,10 +156,10 @@ struct DiscussionsCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Discussions: \(repo.fullName)")
+            cliPrint("Discussions: \(repo.fullName)")
         }
         for line in discussionsTableLines(discussions, useColor: self.output.useColor, includeURL: self.output.plain == false, now: Date()) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -210,10 +210,10 @@ struct TagsCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Tags: \(repo.fullName)")
+            cliPrint("Tags: \(repo.fullName)")
         }
         for line in tagsTableLines(tags, useColor: self.output.useColor, includeURL: self.output.plain == false) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -264,10 +264,10 @@ struct BranchesCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Branches: \(repo.fullName)")
+            cliPrint("Branches: \(repo.fullName)")
         }
         for line in branchesTableLines(branches, useColor: self.output.useColor, includeURL: self.output.plain == false) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -318,10 +318,10 @@ struct ContributorsCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Contributors: \(repo.fullName)")
+            cliPrint("Contributors: \(repo.fullName)")
         }
         for line in contributorsTableLines(contributors, useColor: self.output.useColor, includeURL: self.output.plain == false) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -382,10 +382,10 @@ struct CommitsCommand: CommanderRunnableCommand {
             }
 
             if self.output.plain == false, self.output.useColor {
-                print("Commits: \(repo.fullName)")
+                cliPrint("Commits: \(repo.fullName)")
             }
             for line in commitsTableLines(commits.items, useColor: self.output.useColor, includeURL: self.output.plain == false, now: Date()) {
-                print(line)
+                Swift.print(line)
             }
             return
         }
@@ -410,10 +410,10 @@ struct CommitsCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Commits: \(login)")
+            cliPrint("Commits: \(login)")
         }
         for line in globalCommitsTableLines(commits, useColor: self.output.useColor, includeURL: self.output.plain == false, now: Date()) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -481,10 +481,10 @@ struct ActivityCommand: CommanderRunnableCommand {
             }
 
             if self.output.plain == false, self.output.useColor {
-                print("Activity: \(repoID.fullName)")
+                cliPrint("Activity: \(repoID.fullName)")
             }
             for line in activityTableLines(events, useColor: self.output.useColor, includeURL: self.output.plain == false, now: Date()) {
-                print(line)
+                Swift.print(line)
             }
             return
         }
@@ -522,7 +522,7 @@ struct ActivityCommand: CommanderRunnableCommand {
         }
 
         if self.output.plain == false, self.output.useColor {
-            print("Activity: \(login)")
+            cliPrint("Activity: \(login)")
         }
         let host = context.host
         for line in globalActivityTableLines(
@@ -532,7 +532,7 @@ struct ActivityCommand: CommanderRunnableCommand {
             now: Date(),
             repoHost: host
         ) {
-            print(line)
+            Swift.print(line)
         }
     }
 }

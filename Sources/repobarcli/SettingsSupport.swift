@@ -475,7 +475,7 @@ func renderRepoListUpdate(action: String, repoName: String, settings: UserSettin
         try printJSON(payload)
         return
     }
-    print("\(action) \(repoName)")
+    cliPrint("\(action) \(repoName)")
 }
 
 struct RepoListOutput: Encodable {

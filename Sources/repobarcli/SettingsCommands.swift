@@ -192,7 +192,7 @@ struct SettingsShowCommand: CommanderRunnableCommand {
         }
 
         for line in settingsSummaryLines(settings: settings) {
-            print(line)
+            Swift.print(line)
         }
     }
 }
@@ -244,6 +244,6 @@ struct SettingsSetCommand: CommanderRunnableCommand {
             return
         }
 
-        print("Updated \(settingKey.rawValue): \(summary)")
+        cliPrint("Updated \(settingKey.rawValue): \(summary)")
     }
 }
