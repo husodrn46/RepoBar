@@ -79,6 +79,23 @@ for RESOURCE_NAME in RepoBar_RepoBar RepoBar_RepoBarCore RepoBar_repobarcli; do
   fi
 done
 
+# SwiftUI's default Text/Label lookup resolves Localizable.strings from the main
+# application bundle. Keep the module bundle above for explicit localizers, and
+# also install the app catalog at the standard main-bundle localization path.
+APP_RESOURCE_BUNDLE="${BUILD_DIR}/RepoBar_RepoBar.bundle"
+if [ -d "${APP_RESOURCE_BUNDLE}" ]; then
+  for LOCALIZATION in en.lproj tr.lproj; do
+    if [ -d "${APP_RESOURCE_BUNDLE}/${LOCALIZATION}" ]; then
+      log "==> Installing main-bundle localization: ${LOCALIZATION}"
+      if command -v ditto >/dev/null 2>&1; then
+        ditto "${APP_RESOURCE_BUNDLE}/${LOCALIZATION}" "${APP_BUNDLE}/Contents/Resources/${LOCALIZATION}"
+      else
+        cp -R "${APP_RESOURCE_BUNDLE}/${LOCALIZATION}" "${APP_BUNDLE}/Contents/Resources/"
+      fi
+    fi
+  done
+fi
+
 if [ -f "${ICON_TARGET}" ]; then
   log "==> Installing app icon"
   cp "${ICON_TARGET}" "${APP_BUNDLE}/Contents/Resources/Icon.icns"
